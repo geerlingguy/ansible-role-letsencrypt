@@ -14,6 +14,7 @@ certbot_auto_renew_hour: 3
 certbot_auto_renew_minute: 30
 
 # Install certificates
+certbot_webserver: apache
 certbot_email: ""
 certbot_domain: ""
 certbot_subdomains: []

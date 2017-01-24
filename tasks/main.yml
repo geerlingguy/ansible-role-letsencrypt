@@ -15,19 +15,19 @@
   service:
     name: nginx
     state: stopped
-  when: drupalvm_webserver == 'nginx'
+  when: certbot_webserver == 'nginx'
 
 - name: Stop apache2
   service:
     name: apache2
     state: stopped
-  when: drupalvm_webserver == 'apache' and ansible_os_family == 'Debian'
+  when: certbot_webserver == 'apache' and ansible_os_family == 'Debian'
 
 - name: Stop httpd
   service:
     name: httpd
     state: stopped
-  when: drupalvm_webserver == 'apache' and ansible_os_family == 'RedHat'
+  when: certbot_webserver == 'apache' and ansible_os_family == 'RedHat'
 
 - name: Check if letsencrypt certificate file exists
   stat: path="/etc/letsencrypt/live/{{ certbot_domain }}/privkey.pem"
@@ -46,19 +46,19 @@
   service:
     name: nginx
     state: started
-  when: drupalvm_webserver == 'nginx'
+  when: certbot_webserver == 'nginx'
 
 - name: Start apache2
   service:
     name: apache2
     state: started
-  when: drupalvm_webserver == 'apache' and ansible_os_family == 'Debian'
+  when: certbot_webserver == 'apache' and ansible_os_family == 'Debian'
 
 - name: Start httpd
   service:
     name: httpd
     state: started
-  when: drupalvm_webserver == 'apache' and ansible_os_family == 'RedHat'
+  when: certbot_webserver == 'apache' and ansible_os_family == 'RedHat'
 
 - name: Add cron job for 'certbot-auto renew' (if configured).
   cron:
@@ -68,7 +68,7 @@
     hour: "{{ certbot_auto_renew_hour }}"
     user: "{{ certbot_auto_renew_user }}"
     cron_file: certbot-cron
-  when: certbot_auto_renew and drupalvm_webserver == 'nginx'
+  when: certbot_auto_renew and certbot_webserver == 'nginx'
 
 - name: Add cron job for 'certbot-auto renew' (if configured).
   cron:
@@ -78,7 +78,7 @@
     hour: "{{ certbot_auto_renew_hour }}"
     user: "{{ certbot_auto_renew_user }}"
     cron_file: certbot-cron
-  when: certbot_auto_renew and drupalvm_webserver == 'apache'  and ansible_os_family == 'Debian'
+  when: certbot_auto_renew and certbot_webserver == 'apache'  and ansible_os_family == 'Debian'
 
 - name: Add cron job for 'certbot-auto renew' (if configured).
   cron:
@@ -88,4 +88,4 @@
     hour: "{{ certbot_auto_renew_hour }}"
     user: "{{ certbot_auto_renew_user }}"
     cron_file: certbot-cron
-  when: certbot_auto_renew and drupalvm_webserver == 'apache'  and ansible_os_family == 'RedHat'
+  when: certbot_auto_renew and certbot_webserver == 'apache'  and ansible_os_family == 'RedHat'
