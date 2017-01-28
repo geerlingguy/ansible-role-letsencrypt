@@ -11,23 +11,20 @@
     path: "{{ certbot_dir }}/certbot-auto"
     mode: 0755
 
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
 - name: Stop nginx
   service:
     name: nginx
     state: stopped
   when: certbot_webserver == 'nginx'
 
-- name: Stop apache2
+- name: Stop apache
   service:
-    name: apache2
+    name: "{{ apache_service }}"
     state: stopped
-  when: certbot_webserver == 'apache' and ansible_os_family == 'Debian'
-
-- name: Stop httpd
-  service:
-    name: httpd
-    state: stopped
-  when: certbot_webserver == 'apache' and ansible_os_family == 'RedHat'
+  when: certbot_webserver == 'apache'
 
 - name: Check if letsencrypt certificate file exists
   stat: path="/etc/letsencrypt/live/{{ certbot_domain }}/privkey.pem"
@@ -48,17 +45,11 @@
     state: started
   when: certbot_webserver == 'nginx'
 
-- name: Start apache2
+- name: Start apache
   service:
-    name: apache2
+    name: "{{ apache_service }}"
     state: started
-  when: certbot_webserver == 'apache' and ansible_os_family == 'Debian'
-
-- name: Start httpd
-  service:
-    name: httpd
-    state: started
-  when: certbot_webserver == 'apache' and ansible_os_family == 'RedHat'
+  when: certbot_webserver == 'apache'
 
 - name: Add cron job for 'certbot-auto renew' (if configured).
   cron:
@@ -73,19 +64,9 @@
 - name: Add cron job for 'certbot-auto renew' (if configured).
   cron:
     name: Certbot automatic renewal.
-    job: "{{ certbot_dir }}/certbot-auto renew --quiet --agree-tos --pre-hook 'service apache2 stop' --post-hook 'service apache2 start'"
+    job: "{{ certbot_dir }}/certbot-auto renew --quiet --agree-tos --pre-hook 'service {{ apache_service }} stop' --post-hook 'service {{ apache_service }} start'"
     minute: "{{ certbot_auto_renew_minute }}"
     hour: "{{ certbot_auto_renew_hour }}"
     user: "{{ certbot_auto_renew_user }}"
     cron_file: certbot-cron
-  when: certbot_auto_renew and certbot_webserver == 'apache'  and ansible_os_family == 'Debian'
-
-- name: Add cron job for 'certbot-auto renew' (if configured).
-  cron:
-    name: Certbot automatic renewal.
-    job: "{{ certbot_dir }}/certbot-auto renew --quiet --agree-tos --pre-hook 'service httpd stop' --post-hook 'service httpd start'"
-    minute: "{{ certbot_auto_renew_minute }}"
-    hour: "{{ certbot_auto_renew_hour }}"
-    user: "{{ certbot_auto_renew_user }}"
-    cron_file: certbot-cron
-  when: certbot_auto_renew and certbot_webserver == 'apache'  and ansible_os_family == 'RedHat'
+  when: certbot_auto_renew and certbot_webserver == 'apache'
