@@ -3,7 +3,7 @@ dependencies: []
 
 galaxy_info:
   author: geerlingguy
-  description: "Certbot (for Let's Encrypt) for RHEL/CentOS and Debian/Ubuntu."
+  description: "Installs and configures Certbot (for Let's Encrypt)."
   company: "Midwestern Mac, LLC"
   license: "license (BSD, MIT)"
   min_ansible_version: 1.8
@@ -12,12 +12,15 @@ galaxy_info:
       versions:
         - 6
         - 7
+    - name: Fedora
+      versions:
+        - all
     - name: Ubuntu
       versions:
-      - all
+        - all
     - name: Debian
       versions:
-      - all
+        - all
   galaxy_tags:
     - networking
     - system

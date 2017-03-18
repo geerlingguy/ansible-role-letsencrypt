@@ -1,10 +1,11 @@
 ---
 # Where to get Certbot.
+certbot_from_git: no
 certbot_repo: https://github.com/certbot/certbot.git
 certbot_version: master
 certbot_keep_updated: yes
 
-# Where to put Certbot.
+# Where to put Certbot when cloning from Git.
 certbot_dir: /opt/certbot
 
 # How to keep Certbot certs up to date.

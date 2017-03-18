@@ -1,22 +1,9 @@
 ---
-- name: Clone Certbot into configured directory.
-  git:
-    repo: "{{ certbot_repo }}"
-    dest: "{{ certbot_dir }}"
-    version: "{{ certbot_version }}"
-    update: "{{ certbot_keep_updated }}"
-    force: yes
+- include: install-from-package.yml
+  when: not certbot_from_git and (ansible_distribution == 'Fedora' or ansible_distribution == 'RedHat')
 
-- name: Ensure certbot-auto is executable.
-  file:
-    path: "{{ certbot_dir }}/certbot-auto"
-    mode: 0755
+- include: install-from-git.yml
+  when: certbot_from_git or (ansible_distribution != 'Fedora' and ansible_distribution != 'RedHat')
 
-- name: Add cron job for 'certbot-auto renew' (if configured).
-  cron:
-    name: Certbot automatic renewal.
-    job: "{{ certbot_dir }}/certbot-auto renew --quiet --no-self-upgrade"
-    minute: "{{ certbot_auto_renew_minute }}"
-    hour: "{{ certbot_auto_renew_hour }}"
-    user: "{{ certbot_auto_renew_user }}"
+- include: renew-cron.yml
   when: certbot_auto_renew

@@ -1,0 +1,7 @@
+---
+- name: Install Certbot
+  package: name=certbot state=present
+
+- name: Set Certbot script variable
+  set_fact:
+    certbot_script: certbot
