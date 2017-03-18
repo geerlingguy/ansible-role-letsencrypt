@@ -1,9 +1,9 @@
 ---
 - include: install-from-package.yml
-  when: not certbot_from_git
+  when: not certbot_from_git and (ansible_distribution == 'Fedora' or ansible_distribution == 'RedHat')
 
 - include: install-from-git.yml
-  when: certbot_from_git
+  when: certbot_from_git or (ansible_distribution == 'Ubuntu')
 
 - include: renew-cron.yml
   when: certbot_auto_renew
