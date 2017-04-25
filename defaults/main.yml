@@ -4,6 +4,7 @@ certbot_auto_renew: true
 certbot_auto_renew_user: "{{ ansible_user }}"
 certbot_auto_renew_hour: 3
 certbot_auto_renew_minute: 30
+certbot_auto_renew_parameters: ""
 
 # To install from source (on older OSes or if you need a specific or newer
 # version of Certbot), set this variable to `yes` and configure other options.
