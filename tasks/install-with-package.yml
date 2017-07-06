@@ -1,7 +1,15 @@
 ---
+- name: Define certbot_packages.
+  set_fact:
+    certbot_packages: "{{ [ certbot_package ] }}"
+
+- name: Define extra certbot_packages.
+  set_fact:
+    certbot_packages: "{{ certbot_packages | list + certbot_package_extras | list }}"
+
 - name: Install Certbot.
   package: "name={{ item }} state=present"
-  with_items: "{{ certbot_package }}"
+  with_items: "{{ certbot_packages }}"
 
 - name: Set Certbot script variable.
   set_fact:

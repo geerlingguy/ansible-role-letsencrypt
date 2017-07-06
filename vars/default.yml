@@ -1,5 +1,2 @@
 ---
-certbot_package:
-  - certbot
-  - certbot-apache
-  - certbot-nginx
+certbot_package: certbot

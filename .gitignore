@@ -1,2 +1,3 @@
 *.retry
 tests/test.sh
+meta/.galaxy_install_info

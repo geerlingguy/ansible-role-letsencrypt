@@ -1,4 +1,7 @@
 ---
+# Additional packages/plugins for Certbot
+certbot_package_extras: []
+
 # Certbot auto-renew cron job configuration (for certificate renewals).
 certbot_auto_renew: true
 certbot_auto_renew_user: "{{ ansible_user }}"
