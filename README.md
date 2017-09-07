@@ -28,7 +28,11 @@ domains.
 The email to register with. This is required (if you set `certbot_handle_certs` to true) or else the role will fail.
 
 certbot_domains: []
-The domains to generate certs for. This is required (if you set `certbot_handle_certs` to true) or else the role will fail.
+The domains to generate certs for. This is required (if you set `certbot_handle_certs` to true) or else the role will fail. If you are also using the [geerlingguy/ansible-role-apache](https://github.com/geerlingguy/ansible-role-apache) role, you can use something like this to get a list of your domains:
+```yaml
+certbot_domains: "{{ [0,1,2] | map('extract', apache_vhosts, 'servername') | list }}"
+```
+where `[0,1,2,]` means the first, second and third virtual host specification respectively.
 
 `certbot_register_command: "{{ certbot_script }} register --non-interactive --agree-tos --email {{ certbot_register_email }}"`
 The command to run to register with Let's Encrypt.
