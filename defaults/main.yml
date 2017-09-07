@@ -32,4 +32,4 @@ certbot_register_command: "{{ certbot_script }} register --non-interactive --agr
 certbot_domains: []
 
 # The command to run to generate the certificates
-certbot_cert_command: "{{ certbot_script }} certonly --noninteractive --standalone"
+certbot_cert_command: "{{ certbot_script }} certonly --noninteractive --standalone --expand"
