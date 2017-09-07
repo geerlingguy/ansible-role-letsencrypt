@@ -19,3 +19,5 @@
 
 - name: Generate certificates
   command: "{{ certbot_cert_command }} -d {{ certbot_domains | join(' -d ') }}"
+  register: result
+  changed_when: result.stdout.find("Certificate not yet due for renewal") == -1
