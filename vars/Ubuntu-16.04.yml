@@ -1,1 +1,2 @@
 certbot_package: letsencrypt
+certbot_auto_renew_args: "--no-self-upgrade"
