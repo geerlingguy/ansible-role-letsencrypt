@@ -1,2 +1,3 @@
 ---
 certbot_package: certbot
+certbot_renew_command: "renew --quiet --no-self-upgrade"
