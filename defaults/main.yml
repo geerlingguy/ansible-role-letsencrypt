@@ -1,7 +1,10 @@
 ---
+# Global options for configuration file
+certbot_config_file_options: {}
+
 # Certbot auto-renew cron job configuration (for certificate renewals).
 certbot_auto_renew: true
-certbot_auto_renew_user: "{{ ansible_user }}"
+certbot_auto_renew_user: "{{ lookup('env', 'USER') }}"
 certbot_auto_renew_hour: 3
 certbot_auto_renew_minute: 30
 certbot_auto_renew_options: "--quiet --no-self-upgrade"
@@ -15,3 +18,19 @@ certbot_keep_updated: yes
 
 # Where to put Certbot when installing from source.
 certbot_dir: /opt/certbot
+
+# Set to true to have this role register and generate certificates for your
+# domains.
+certbot_handle_certs: true
+
+# The email to register with (required).
+certbot_register_email: ''
+
+# The command to run to register with Let's Encrypt
+certbot_register_command: "{{ certbot_script }} register --non-interactive --agree-tos --email {{ certbot_register_email }}"
+
+# The domains to generate certs for
+certbot_domains: []
+
+# The command to run to generate the certificates
+certbot_cert_command: "{{ certbot_script }} certonly --noninteractive --standalone --expand"

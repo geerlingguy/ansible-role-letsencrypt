@@ -20,6 +20,27 @@ The variable `certbot_install_from_source` controls whether to install Certbot f
 
 By default, this role configures a cron job to run under the provided user account at the given hour and minute, every day. The defaults run `certbot renew` (or `certbot-auto renew`) via cron every day at 03:30:00 by the user you use in your Ansible playbook. It's preferred that you set a custom user/hour/minute so the renewal is during a low-traffic period and done by a non-root user account.
 
+### Certificate generation
+`certbot_handle_certs: true`
+Set to true to have this role register and generate certificates for your
+domains.
+
+`certbot_register_email: ''``
+The email to register with. This is required (if you set `certbot_handle_certs` to true) or else the role will fail.
+
+certbot_domains: []
+The domains to generate certs for. This is required (if you set `certbot_handle_certs` to true) or else the role will fail. If you are also using the [geerlingguy/ansible-role-apache](https://github.com/geerlingguy/ansible-role-apache) role, you can use something like this to get a list of your domains:
+```yaml
+certbot_domains: "{{ [0,1,2] | map('extract', apache_vhosts, 'servername') | list }}"
+```
+where `[0,1,2,]` means the first, second and third virtual host specification respectively.
+
+`certbot_register_command: "{{ certbot_script }} register --non-interactive --agree-tos --email {{ certbot_register_email }}"`
+The command to run to register with Let's Encrypt.
+
+`certbot_cert_command: "{{ certbot_script }} certonly --noninteractive --standalone"`
+The command to run to generate the certificates.
+
 ### Source Installation from Git
 
 You can install Certbot from it's Git source repository if desired. This might be useful in several cases, but especially when older distributions don't have Certbot packages available (e.g. CentOS < 7, Ubuntu < 16.10 and Debian < 8).
@@ -42,16 +63,18 @@ None.
 ## Example Playbook
 
     - hosts: servers
-    
+
       vars:
         certbot_auto_renew_user: your_username_here
         certbot_auto_renew_minute: 20
         certbot_auto_renew_hour: 5
-    
+
       roles:
         - geerlingguy.certbot
 
-### Creating certificates with certbot
+### Manually creating certificates with certbot
+
+If you do not enable certificate generation via this role (`certbot_handle_certs: true`), you can follow the steps below to generate your certificates.
 
 After installation, you can create certificates using the `certbot` (or `certbot-auto`) script (use `letsencrypt` on Ubuntu 16.04, or use `/opt/certbot/certbot-auto` if installing from source/Git. Here are some example commands to configure certificates with Certbot:
 

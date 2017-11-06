@@ -7,5 +7,8 @@
 - include: install-from-source.yml
   when: certbot_install_from_source
 
+- include: generate-certs.yml
+  when: certbot_handle_certs
+
 - include: renew-cron.yml
   when: certbot_auto_renew

@@ -1,0 +1,23 @@
+---
+
+- name: Make sure we have an email
+  assert:
+    that:
+    - "certbot_register_email != ''"
+    msg: "You need to provide an email address you own to register with Let's Encrypt."
+
+- name: Make sure we have domains
+  assert:
+    that:
+    - "certbot_domains != []"
+    msg: "You need to provide at least one domain to generate certificates for."
+
+- name: Register with Let's Encrypt
+  command: "{{ certbot_register_command }}"
+  args:
+    creates: /etc/letsencrypt/accounts
+
+- name: Generate certificates
+  command: "{{ certbot_cert_command }} -d {{ certbot_domains | join(' -d ') }}"
+  register: result
+  changed_when: result.stdout.find("Certificate not yet due for renewal") == -1
