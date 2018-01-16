@@ -1,0 +1,22 @@
+---
+- name: Check if certificate already exists.
+  stat:
+    path: /etc/letsencrypt/live/{{ cert_item.domains | first }}/cert.pem
+  register: letsencrypt_cert
+
+- name: Create deploy hook
+  copy:
+    content: "{{ certbot_deployhook }}"
+    dest: /etc/letsencrypt/renewal-hooks/deploy/ansible.sh
+    mode: u+rwx
+  run_once: yes
+  when: certbot_deployhook is defined
+
+- debug:
+    var: certbot_create_command
+    verbosity: 2
+
+- name: Generate new certificate if one doesn't exist.
+  shell: "{{ certbot_create_command }}"
+  when: not letsencrypt_cert.stat.exists
+
