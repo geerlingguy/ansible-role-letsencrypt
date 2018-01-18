@@ -1,4 +1,7 @@
 ---
+# Global options for configuration file
+certbot_config_file_options: {}
+
 # Certbot auto-renew cron job configuration (for certificate renewals).
 certbot_auto_renew: true
 certbot_auto_renew_user: "{{ ansible_user }}"

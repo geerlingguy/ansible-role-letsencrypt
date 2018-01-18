@@ -14,6 +14,8 @@ Generally, installing from source (see section `Source Installation from Git`) l
 
 The variable `certbot_install_from_source` controls whether to install Certbot from Git or package management. The latter is the default, so the variable defaults to `no`.
 
+The variable `certbot_config_file_options` defaults to an empty dictionary but can be used to configure global options for Certbot, which will go into `/etc/letsencrypt/cli.ini`.
+
     certbot_auto_renew: true
     certbot_auto_renew_user: "{{ ansible_user }}"
     certbot_auto_renew_hour: 3
@@ -82,12 +84,14 @@ None.
 ## Example Playbook
 
     - hosts: servers
-    
+
       vars:
+        certbot_config_file_options:
+          rsa-key-size: 4096
         certbot_auto_renew_user: your_username_here
         certbot_auto_renew_minute: 20
         certbot_auto_renew_hour: 5
-    
+
       roles:
         - geerlingguy.certbot
 

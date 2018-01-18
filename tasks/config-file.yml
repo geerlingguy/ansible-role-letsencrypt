@@ -1,0 +1,10 @@
+---
+- name: Ensure configuration directory is present.
+  file:
+    path: /etc/letsencrypt
+    state: directory
+
+- name: Install Certbot configuration file.
+  template:
+    src: cli.ini.j2
+    dest: /etc/letsencrypt/cli.ini
