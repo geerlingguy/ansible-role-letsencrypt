@@ -4,7 +4,7 @@
   become: true
 
   vars:
-    certbot_install_from_source: true
+    certbot_install: "source"
     certbot_auto_renew_user: root
 
   pre_tasks:

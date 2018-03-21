@@ -7,6 +7,7 @@ Installs and configures Certbot (for Let's Encrypt).
 ## Requirements
 
 If installing from source, Git is required. You can install Git using the `geerlingguy.git` role.
+If installing from pip, pip is required.
 
 Generally, installing from source (see section `Source Installation from Git`) leads to a better experience using Certbot and Let's Encrypt, especially if you're using an older OS release.
 
@@ -60,11 +61,18 @@ Services that should be stopped while `certbot` runs it's own standalone server 
 
 These services will only be stopped the first time a new cert is generated.
 
+### Installation from pip (or pip3)
+
+    certbot_install: 'pip'
+    # or certbot_install: 'pip3'
+
+The resulting certbot program will live in /usr/local/bin/certbot
+
 ### Source Installation from Git
 
 You can install Certbot from it's Git source repository if desired. This might be useful in several cases, but especially when older distributions don't have Certbot packages available (e.g. CentOS < 7, Ubuntu < 16.10 and Debian < 8).
 
-    certbot_install_from_source: false
+    certbot_install: "source"
     certbot_repo: https://github.com/certbot/certbot.git
     certbot_version: master
     certbot_keep_updated: true
