@@ -1,8 +1,15 @@
 ---
+- name: Create certbot renewal script.
+  template:
+    src: files/certbot-auto-renew-script.j2
+    dest: /opt/certbot-auto-renew-script.sh
+    owner: "{{ certbot_auto_renew_user }}"
+    mode: 0744
+
 - name: Add cron job for certbot renewal (if configured).
   cron:
     name: Certbot automatic renewal.
-    job: "{{ certbot_script }} renew {{ certbot_auto_renew_options }}"
+    job: "/opt/certbot-auto-renew-script.sh"
     minute: "{{ certbot_auto_renew_minute }}"
     hour: "{{ certbot_auto_renew_hour }}"
     user: "{{ certbot_auto_renew_user }}"

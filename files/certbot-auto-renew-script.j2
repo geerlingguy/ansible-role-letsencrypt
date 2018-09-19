@@ -1,0 +1,11 @@
+#!/bin/bash
+
+{% for serv in certbot_standalone_stop_services %}
+service {{ serv }} stop
+{% endfor %}
+
+{{ certbot_script }} renew {{ certbot_auto_renew_options }}
+
+{% for serv in certbot_standalone_stop_services %}
+service {{ serv }} start
+{% endfor %}
