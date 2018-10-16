@@ -15,3 +15,12 @@
   file:
     path: "{{ certbot_script }}"
     mode: 0755
+
+- name: Install plugins
+  pip:
+    name: "file://{{ my_certbot_dir}}/certbot-{{ item }}/"
+    state: present
+    extra_args: --upgrade
+  with_items:
+    - "{{ certbot_plugins }}"
+  when: certbot_plugins is defined

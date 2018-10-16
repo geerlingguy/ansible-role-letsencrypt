@@ -81,6 +81,18 @@ Let's Encrypt supports [generating wildcard certificates](https://community.lets
 
 Michael Porter also has a walkthrough of [Creating A Let’s Encrypt Wildcard Cert With Ansible](https://www.michaelpporter.com/2018/09/creating-a-wildcard-cert-with-ansible/), specifically with Cloudflare.
 
+## Install plugins
+
+Let's Encrypt has some plugins. It's possible to install them, but only if you install from source:
+
+    certbot_install_from_source: true
+    certbot_plugins:
+      - dns-route53
+
+When usin plugins, you have to execute `cerbot` from path, so you should set a `certbot_create_command` that doesn't use `certbot_script`, as this example:
+
+    "certbot certonly --noninteractive --agree-tos --email {{ cert_item.email | default(certbot_admin_email) }} -d {{ cert_item.domains | join(',') }} --dns-route53"
+
 ## Dependencies
 
 None.
@@ -88,12 +100,12 @@ None.
 ## Example Playbook
 
     - hosts: servers
-    
+
       vars:
         certbot_auto_renew_user: your_username_here
         certbot_auto_renew_minute: 20
         certbot_auto_renew_hour: 5
-    
+
       roles:
         - geerlingguy.certbot
 
