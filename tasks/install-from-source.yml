@@ -17,6 +17,7 @@
     mode: 0755
 
 - name: Install plugins
+  become: true
   pip:
     name: "file://{{ my_certbot_dir}}/certbot-{{ item }}/"
     state: present
