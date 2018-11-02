@@ -1,5 +1,6 @@
 ---
 - name: Clone Certbot into configured directory.
+  become: true
   git:
     repo: "{{ certbot_repo }}"
     dest: "{{ certbot_dir }}"
