@@ -1,12 +1,4 @@
 ---
-- name: Install pip
-  package: name=python-pip state=present
-  when: certbot_install == 'pip'
-
-- name: Install pip3
-  package: name=python3-pip state=present
-  when: certbot_install == 'pip3'
-
 - name: Install Certbot.
   pip: name="{{ certbot_package }}" state=present executable="{{ certbot_install }}"
 
