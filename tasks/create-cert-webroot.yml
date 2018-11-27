@@ -12,10 +12,6 @@
   run_once: yes
   when: certbot_deployhook is defined
 
-- debug:
-    var: certbot_create_command
-    verbosity: 2
-
 - name: Generate new certificate if one doesn't exist.
   shell: "{{ certbot_create_command }}"
   when: not letsencrypt_cert.stat.exists
