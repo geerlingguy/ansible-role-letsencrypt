@@ -123,7 +123,11 @@ If you want to fully automate the process of adding a new certificate, but don't
 
 ### Certbot certificate auto-renewal
 
-By default, this role adds a cron job that will renew all installed certificates once per day at the hour and minute of your choosing.
+By default, this role adds a cron job that will renew all installed certificates once per day at the hour and minute of your choosing. The cron job will be added to the crontab of the user with which you run this ansible role. 
+
+You can check that the cronjob has been added by logging in as that user and checking the user crontab:
+  
+    crontab -l
 
 You can test the auto-renewal (without actually renewing the cert) with the command:
 
