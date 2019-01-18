@@ -15,7 +15,7 @@ Generally, installing from source (see section `Source Installation from Git`) l
 The variable `certbot_install_from_source` controls whether to install Certbot from Git or package management. The latter is the default, so the variable defaults to `no`.
 
     certbot_auto_renew: true
-    certbot_auto_renew_user: "{{ ansible_user }}"
+    certbot_auto_renew_user: "{{ ansible_user | default(lookup('env', 'USER')) }}"
     certbot_auto_renew_hour: 3
     certbot_auto_renew_minute: 30
     certbot_auto_renew_options: "--quiet --no-self-upgrade"
@@ -26,9 +26,9 @@ By default, this role configures a cron job to run under the provided user accou
 
 Currently there is one built-in method for generating new certificates using this role: `standalone`. Other methods (e.g. using nginx or apache and a webroot) may be added in the future.
 
-**For a complete example**: see the fully functional test playbook in [tests/test-standalone-nginx-aws.yml](tests/test-standalone-nginx-aws.yml).
+**For a complete example**: see the fully functional test playbook in [molecule/default/playbook-standalone-nginx-aws.yml](molecule/default/playbook-standalone-nginx-aws.yml).
 
-    certbot_create_if_missing: no
+    certbot_create_if_missing: false
     certbot_create_method: standalone
 
 Set `certbot_create_if_missing` to `yes` or `True` to let this role generate certs. Set the method used for generating certs with the `certbot_create_method` variable—current allowed values include: `standalone`.
@@ -64,16 +64,22 @@ These services will only be stopped the first time a new cert is generated.
 
 You can install Certbot from it's Git source repository if desired. This might be useful in several cases, but especially when older distributions don't have Certbot packages available (e.g. CentOS < 7, Ubuntu < 16.10 and Debian < 8).
 
-    certbot_install_from_source: no
+    certbot_install_from_source: false
     certbot_repo: https://github.com/certbot/certbot.git
     certbot_version: master
-    certbot_keep_updated: yes
+    certbot_keep_updated: true
 
 Certbot Git repository options. To install from source, set `certbot_install_from_source` to `yes`. This clones the configured `certbot_repo`, respecting the `certbot_version` setting. If `certbot_keep_updated` is set to `yes`, the repository is updated every time this role runs.
 
     certbot_dir: /opt/certbot
 
 The directory inside which Certbot will be cloned.
+
+### Wildcard Certificates
+
+Let's Encrypt supports [generating wildcard certificates](https://community.letsencrypt.org/t/acme-v2-and-wildcard-certificate-support-is-live/55579), but the process for generating and using them is slightly more involved. See comments in [this pull request](https://github.com/geerlingguy/ansible-role-certbot/pull/60#issuecomment-423919284) for an example of how to use this role to maintain wildcard certs.
+
+Michael Porter also has a walkthrough of [Creating A Let’s Encrypt Wildcard Cert With Ansible](https://www.michaelpporter.com/2018/09/creating-a-wildcard-cert-with-ansible/), specifically with Cloudflare.
 
 ## Dependencies
 

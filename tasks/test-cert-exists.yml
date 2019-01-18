@@ -1,12 +1,12 @@
 ---
 - name: Check if certificate already exists.
   stat:
-    path: /etc/letsencrypt/live/{{ cert_item.domains | first }}/cert.pem
+    path: /etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/cert.pem
   register: letsencrypt_cert_exists
 
 - name: Check if certificate domain list has changed.
   lineinfile:
-    path: /etc/letsencrypt/domains-{{ cert_item.domains | first }}.json
+    path: /etc/letsencrypt/domains-{{ cert_item.domains | first | replace('*.', '' }}.json
     line: " {{ cert_item.domains | to_json }}"
     state: present
     create: yes

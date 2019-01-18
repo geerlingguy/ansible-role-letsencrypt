@@ -5,7 +5,7 @@
     dest: "{{ certbot_dir }}"
     version: "{{ certbot_version }}"
     update: "{{ certbot_keep_updated }}"
-    force: yes
+    force: true
 
 - name: Set Certbot script variable.
   set_fact:

@@ -9,7 +9,7 @@
 # Play 1: Provision EC2 instance and A record.
 - hosts: localhost
   connection: local
-  gather_facts: no
+  gather_facts: false
 
   tasks:
     - name: Configure EC2 Security Group.
@@ -50,9 +50,10 @@
           Name: "certbot-standalone-nginx-test"
         group: ['default', 'certbot_test_http']
         instance_type: t2.micro
-        image: ami-02e98f78 # CentOS Linux 7 x86_64 HVM EBS
+        # CentOS Linux 7 x86_64 HVM EBS
+        image: ami-02e98f78
         region: "us-east-1"
-        wait: yes
+        wait: true
         wait_timeout: 500
         exact_count: 1
         count_tag:
@@ -68,25 +69,25 @@
         type: A
         ttl: 300
         value: "{{ created_instance.tagged_instances.0.public_ip }}"
-        wait: yes
-        overwrite: yes
+        wait: true
+        overwrite: true
 
     - name: Add EC2 instance to inventory groups.
       add_host:
         name: "certbot-test.servercheck.in"
         groups: "aws,aws_nginx"
         ansible_ssh_user: centos
-        host_key_checking: False
+        host_key_checking: false
       when: created_instance.tagged_instances.0.id is defined
 
 # Play 2: Configure EC2 instance with Certbot and Nginx.
 - hosts: aws_nginx
-  gather_facts: yes
-  become: yes
+  gather_facts: true
+  become: true
 
   vars:
     certbot_admin_email: https@servercheck.in
-    certbot_create_if_missing: yes
+    certbot_create_if_missing: true
     certbot_create_standalone_stop_services: []
     certbot_certs:
       - domains:
@@ -107,7 +108,7 @@
 
   pre_tasks:
     - name: Update apt cache.
-      apt: update_cache=yes cache_valid_time=600
+      apt: update_cache=true cache_valid_time=600
       when: ansible_os_family == 'Debian'
       changed_when: false
 
@@ -135,12 +136,12 @@
         url: https://certbot-test.servercheck.in/
         status_code: 200
       delegate_to: localhost
-      become: no
+      become: false
 
 # Play 3: Tear down EC2 instance and A record.
 - hosts: localhost
   connection: local
-  gather_facts: no
+  gather_facts: false
 
   tasks:
     - name: Destroy EC2 instance.
@@ -149,7 +150,7 @@
         instance_ids: ["{{ created_instance.tagged_instances.0.id }}"]
         region: "us-east-1"
         state: absent
-        wait: yes
+        wait: true
         wait_timeout: 500
 
     - name: Delete Security Group.
