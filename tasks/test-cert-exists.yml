@@ -9,8 +9,8 @@
     path: /etc/letsencrypt/domains-{{ cert_item.domains | first | replace('*.', '') }}.json
     line: " {{ cert_item.domains | to_json }}"
     state: present
-    create: yes
-  check_mode: yes
+    create: true
+  check_mode: true
   register: letsencrypt_cert_contents
   when: letsencrypt_cert_exists.stat.exists
 
