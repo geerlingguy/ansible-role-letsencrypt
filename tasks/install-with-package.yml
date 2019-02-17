@@ -2,7 +2,7 @@
 - name: Ensure package repo is present
   apt_repository:
     repo: ppa:certbot/certbot
-  when: ansible_distribution == "Ubuntu" or ansible_distribution == "Debian"
+  when: ansible_distribution == "Ubuntu"
 
 - name: Install Certbot.
   package: "name={{ certbot_package }} state=present"
