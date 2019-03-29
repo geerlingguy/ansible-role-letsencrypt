@@ -1,0 +1,21 @@
+---
+- name: Check if certificate already exists.
+  stat:
+    path: /etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/cert.pem
+  register: letsencrypt_cert
+
+- name: Ensure cloud-init directory exists.
+  file:
+    path: /var/lib/cloud/scripts/per-instance
+    state: directory
+
+- name: Ensure cloud-init creates certificates.
+  template:
+    src: certbot-init.sh.j2
+    dest: "/var/lib/cloud/scripts/per-instance/certbot-init-{{ cert_item.domains | first | replace('*.', '') }}.sh"
+
+- name: Ensure test certificates are created.
+  command: "{{ certbot_create_command }} --test-cert"
+  when:
+    - not letsencrypt_cert.stat.exists
+    - certbot_cloud_init_test_certificates

@@ -36,3 +36,7 @@ certbot_keep_updated: true
 
 # Where to put Certbot when installing from source.
 certbot_dir: /opt/certbot
+
+# When certbot_create_method==cloud-init, test certificates will be installed
+# that can be used by a server (eg. nginx)
+certbot_cloud_init_test_certificates: true
