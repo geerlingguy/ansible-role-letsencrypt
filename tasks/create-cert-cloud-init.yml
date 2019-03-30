@@ -13,6 +13,7 @@
   template:
     src: certbot-init.sh.j2
     dest: "/var/lib/cloud/scripts/per-instance/certbot-init-{{ cert_item.domains | first | replace('*.', '') }}.sh"
+    mode: +rx
 
 - name: Ensure test certificates are created.
   command: "{{ certbot_create_command }} --test-cert"
