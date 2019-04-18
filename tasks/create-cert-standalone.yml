@@ -4,6 +4,17 @@
     path: /etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/cert.pem
   register: letsencrypt_cert
 
+- name: create pre and post hook folders because those don't exist yet on a fresh install
+- file:
+    path: /etc/letsencrypt/renewal-hooks/{{ item }}
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+  with_items:
+    - pre
+    - post
+
 - name: Create pre hook to stop services
   template:
     src: stop_services.j2
