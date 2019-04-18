@@ -5,7 +5,7 @@
   register: letsencrypt_cert
 
 - name: create pre and post hook folders because those don't exist yet on a fresh install
-- file:
+  file:
     path: /etc/letsencrypt/renewal-hooks/{{ item }}
     state: directory
     mode: 0755
