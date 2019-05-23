@@ -11,7 +11,9 @@
     - certbot
 
 - import_tasks: install-from-source.yml
-  when: certbot_install_from_source
+  when:
+    - certbot_install_from_source
+    - not certbot_install_from_pypi
   tags:
     - certbot
 
