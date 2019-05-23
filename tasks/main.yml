@@ -1,11 +1,26 @@
 ---
 - import_tasks: include-vars.yml
+  tags:
+    - certbot
 
 - import_tasks: install-with-package.yml
-  when: not certbot_install_from_source
+  when:
+    - not certbot_install_from_source
+    - not certbot_install_from_pypi
+  tags:
+    - certbot
 
 - import_tasks: install-from-source.yml
   when: certbot_install_from_source
+  tags:
+    - certbot
+
+- import_tasks: install-from-pypi.yml
+  when:
+    - not certbot_install_from_source
+    - certbot_install_from_pypi
+  tags:
+    - certbot
 
 - include_tasks: create-cert-standalone.yml
   with_items: "{{ certbot_certs }}"
@@ -14,6 +29,10 @@
     - certbot_create_method == 'standalone'
   loop_control:
     loop_var: cert_item
+  tags:
+    - certbot
 
 - import_tasks: renew-cron.yml
   when: certbot_auto_renew
+  tags:
+    - certbot

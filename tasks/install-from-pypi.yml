@@ -1,0 +1,25 @@
+---
+- name: Install latest Certbot from pypi
+  when:
+    - certbot_pypi_version == "latest"
+  pip:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - certbot
+    - certbot-nginx
+
+- name: Install latest Certbot from pypi
+  when:
+    - certbot_pypi_version != "latest"
+  pip:
+    name: "{{ item }}"
+    state: present
+    version: "{{ certbot_pypi_version }}"
+  with_items:
+    - certbot
+    - certbot-nginx
+
+- name: Set Certbot script variable.
+  set_fact:
+    certbot_script: "/usr/local/bin/certbot"

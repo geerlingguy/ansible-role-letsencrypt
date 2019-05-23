@@ -27,6 +27,8 @@ certbot_create_standalone_stop_services:
   # - apache
   # - varnish
 
+certbot_pypi_version: latest
+
 # To install from source (on older OSes or if you need a specific or newer
 # version of Certbot), set this variable to `yes` and configure other options.
 certbot_install_from_source: false
