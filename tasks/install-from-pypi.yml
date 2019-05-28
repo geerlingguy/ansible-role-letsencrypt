@@ -4,7 +4,7 @@
     - certbot_pypi_version == "latest"
   pip:
     name: "{{ item }}"
-    state: latest
+    state: "{{ certbot_pypi_version }}"
   with_items:
     - certbot
     - certbot-nginx
