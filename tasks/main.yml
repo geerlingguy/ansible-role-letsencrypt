@@ -2,10 +2,10 @@
 - import_tasks: include-vars.yml
 
 - import_tasks: install-with-package.yml
-  when: not certbot_install_from_source
+  when: not certbot_install_from_source | bool
 
 - import_tasks: install-from-source.yml
-  when: certbot_install_from_source
+  when: certbot_install_from_source | bool
 
 - include_tasks: create-cert-standalone.yml
   with_items: "{{ certbot_certs }}"
@@ -16,4 +16,4 @@
     loop_var: cert_item
 
 - import_tasks: renew-cron.yml
-  when: certbot_auto_renew
+  when: certbot_auto_renew | bool
