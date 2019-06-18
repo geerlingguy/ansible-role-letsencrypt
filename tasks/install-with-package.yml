@@ -2,6 +2,10 @@
 - name: Install Certbot.
   package: "name={{ certbot_package }} state=present"
 
+- name: Install Certbot Extra Packages.
+  package: "name={{ certbot_extra_packages }} state=present"
+  when: certbot_extra_packages | length > 0
+
 - name: Set Certbot script variable.
   set_fact:
     certbot_script: "{{ certbot_package }}"
