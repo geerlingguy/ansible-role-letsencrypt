@@ -10,6 +10,7 @@ certbot_auto_renew_options: "--quiet --no-self-upgrade"
 certbot_create_if_missing: false
 certbot_create_method: standalone
 certbot_admin_email: email@example.com
+certbot_cert_name: ""
 certbot_certs: []
 # - email: janedoe@example.com
 #   domains:
@@ -19,7 +20,7 @@ certbot_certs: []
 #     - example3.com
 certbot_create_command: >-
   {{ certbot_script }} certonly --standalone --noninteractive --agree-tos
-  --email {{ cert_item.email | default(certbot_admin_email) }}
+  {% if certbot_cert_name %} --cert-name {{certbot_cert_name}} {%endif%} --email {{ cert_item.email | default(certbot_admin_email) }}
   -d {{ cert_item.domains | join(',') }}
 
 certbot_create_standalone_stop_services:
