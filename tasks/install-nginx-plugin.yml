@@ -1,0 +1,12 @@
+---
+
+- name: Add apt repository
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  loop: "{{ certbot_nginx_plugin_apt_repos }}"
+
+- name: Install nginx plugin
+  package:
+    name: "{{ certbot_nginx_plugin }}"
+    state: present

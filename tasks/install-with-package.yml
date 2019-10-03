@@ -5,3 +5,6 @@
 - name: Set Certbot script variable.
   set_fact:
     certbot_script: "{{ certbot_package }}"
+
+- import_tasks: install-nginx-plugin.yml
+  when: "certbot_auto_renew_options is search('--nginx')"

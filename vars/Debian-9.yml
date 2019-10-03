@@ -1,0 +1,6 @@
+---
+certbot_package: certbot
+certbot_nginx_plugin: python-certbot-nginx
+certbot_nginx_plugin_apt_repos:
+  - deb http://deb.debian.org/debian stretch-backports main contrib non-free
+  - deb-src http://deb.debian.org/debian stretch-backports main contrib non-free

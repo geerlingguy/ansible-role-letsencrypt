@@ -1,2 +1,4 @@
 ---
 certbot_package: certbot
+certbot_nginx_plugin: python2-certbot-nginx
+certbot_nginx_plugin_apt_repos: []
