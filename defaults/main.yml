@@ -50,3 +50,5 @@ certbot_keep_updated: true
 # Where to put Certbot when installing from source.
 certbot_dir: /opt/certbot
 
+# Restart this service after successfull certificate creation:
+certbot_deployhook: "service {{certbot_create_standalone_stop_services }} restart"

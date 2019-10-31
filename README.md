@@ -82,6 +82,14 @@ Setting `certbot_install_method: snap` configures this role to install Certbot v
 
 This install method is currently experimental and may or may not work across all Linux distributions.
 
+#### Webroot Certificate Generation
+
+	certbot_deployhook: "service {{certbot_create_standalone_stop_services }} restart"
+	
+Script content for the deploy hook called by certbot after successfully obtaining the certificate
+	
+When using the `webroot` creation method, a `webroot` item has to be provided for every `certbot_certs` item, specifying which directory to use for the authentication. Also, make sure your webserver correctly delivers contents from this directory.
+
 ### Source Installation from Git
 
 You can install Certbot from it's Git source repository if desired with `certbot_install_method: source`. This might be useful in several cases, but especially when older distributions don't have Certbot packages available (e.g. CentOS < 7, Ubuntu < 16.10 and Debian < 8).
