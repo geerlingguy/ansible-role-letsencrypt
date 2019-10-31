@@ -26,14 +26,25 @@ By default, this role configures a cron job to run under the provided user accou
 
 ### Automatic Certificate Generation
 
-Currently there is one built-in method for generating new certificates using this role: `standalone`. Other methods (e.g. using nginx or apache and a webroot) may be added in the future.
+Currently the `standalone` and `webroot` method are supported for generating new certificates using this role.
 
 **For a complete example**: see the fully functional test playbook in [molecule/default/playbook-standalone-nginx-aws.yml](molecule/default/playbook-standalone-nginx-aws.yml).
 
     certbot_create_if_missing: false
-    certbot_create_method: standalone
 
-Set `certbot_create_if_missing` to `yes` or `True` to let this role generate certs. Set the method used for generating certs with the `certbot_create_method` variable—current allowed values include: `standalone`.
+Set `certbot_create_if_missing` to `yes` or `True` to let this role generate certs. 
+
+	certbot_create_method: standalone
+
+Set the method used for generating certs with the `certbot_create_method` variable — current allowed values are: `standalone` or `webroot`.
+
+	certbot_testmode: false
+
+Enable test mode to only run a test request without actually creating certificates.
+
+	certbot_hsts: false
+
+Enable (HTTP Strict Transport Security) for the certificate generation.
 
     certbot_admin_email: email@example.com
 
@@ -41,13 +52,14 @@ The email address used to agree to Let's Encrypt's TOS and subscribe to cert-rel
 
     certbot_certs: []
       # - email: janedoe@example.com
-      #   domains:
+	  # -  webroot: "/var/www/html"
+      # - domains:
       #     - example1.com
       #     - example2.com
       # - domains:
       #     - example3.com
 
-A list of domains (and other data) for which certs should be generated. You can add an `email` key to any list item to override the `certbot_admin_email`.
+A list of domains (and other data) for which certs should be generated. You can add an `email` key to any list item to override the `certbot_admin_email`. When using the `webroot` creation method, a `webroot` item has to be provided, specifying which directory to use for the authentication. Make sure your webserver correctly delivers contents from this directory.
 
     certbot_create_command: "{{ certbot_script }} certonly --standalone --noninteractive --agree-tos --email {{ cert_item.email | default(certbot_admin_email) }} -d {{ cert_item.domains | join(',') }}"
 
