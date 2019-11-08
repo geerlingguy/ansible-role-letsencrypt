@@ -9,19 +9,18 @@ certbot_auto_renew_options: "--quiet --no-self-upgrade"
 certbot_testmode: false
 certbot_hsts: false
 
-
 # Parameters used when creating new Certbot certs.
 certbot_create_if_missing: false
 certbot_create_method: standalone
 certbot_admin_email: email@example.com
 certbot_certs: []
-  # - email: janedoe@example.com
-  #   webroot: "/var/www/html/"
-  #   domains:
-  #     - example1.com
-  #     - example2.com
-  # - domains:
-  #     - example3.com
+#   - email: janedoe@example.com
+#     webroot: "/var/www/html/"
+#     domains:
+#       - example1.com
+#       - example2.com
+#   - domains:
+#       - example3.com
 
 certbot_create_command: >-
   {{ certbot_script }} certonly --{{ certbot_create_method  }}

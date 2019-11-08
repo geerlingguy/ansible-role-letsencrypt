@@ -9,10 +9,9 @@
     content: "{{ certbot_deployhook }}"
     dest: /etc/letsencrypt/renewal-hooks/deploy/ansible.sh
     mode: u+rwx
-  run_once: yes
+  run_once: true
   when: certbot_deployhook is defined
 
 - name: Generate new certificate if one doesn't exist.
   shell: "{{ certbot_create_command }}"
   when: not letsencrypt_cert.stat.exists
-
