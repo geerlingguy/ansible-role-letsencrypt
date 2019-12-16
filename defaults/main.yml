@@ -50,4 +50,4 @@ certbot_keep_updated: true
 certbot_dir: /opt/certbot
 
 # Restart this service after successfull certificate creation:
-certbot_deployhook: "service {{certbot_create_standalone_stop_services }} restart"
+certbot_deployhook: "service {{ certbot_create_standalone_stop_services | join(' restart && service ') }} restart"
