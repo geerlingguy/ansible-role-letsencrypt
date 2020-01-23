@@ -4,12 +4,15 @@
     path: /etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/cert.pem
   register: letsencrypt_cert
 
+- name: Populate service facts
+  service_facts:
+
 - name: Stop services to allow certbot to generate a cert.
   service:
     name: "{{ item }}"
     state: stopped
   when: not letsencrypt_cert.stat.exists
-  with_items: "{{ certbot_create_standalone_stop_services }}"
+  with_items: "{{ certbot_create_standalone_stop_services | intersect(services) }}"
 
 - name: Generate new certificate if one doesn't exist.
   command: "{{ certbot_create_command }}"
@@ -20,4 +23,4 @@
     name: "{{ item }}"
     state: started
   when: not letsencrypt_cert.stat.exists
-  with_items: "{{ certbot_create_standalone_stop_services }}"
+  with_items: "{{ certbot_create_standalone_stop_services | intersect(services) }}"
