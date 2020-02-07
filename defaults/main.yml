@@ -24,7 +24,7 @@ certbot_certs: []
 
 certbot_create_command: >-
   {{ certbot_script }} certonly --{{ certbot_create_method  }}
-  {{ `-w ` if certbot_create_method == 'webroot'  else '' }}
+  {{ '-w ' if certbot_create_method == 'webroot'  else '' }}
   {{ cert_item.webroot if certbot_create_method == 'webroot'  else '' }}
   {{ '--hsts' if certbot_hsts else '' }}
   {{ '--test-cert' if certbot_testmode else '' }}
