@@ -24,12 +24,12 @@ certbot_certs: []
 
 certbot_create_command: >-
   {{ certbot_script }} certonly --{{ certbot_create_method  }}
-  {{ '-w ' if certbot_create_method == 'webroot'  else '' }}
-  {{ cert_item.webroot if certbot_create_method == 'webroot'  else '' }}
   {{ '--hsts' if certbot_hsts else '' }}
   {{ '--test-cert' if certbot_testmode else '' }}
   --noninteractive --agree-tos
   --email {{ cert_item.email | default(certbot_admin_email) }}
+  {{ '--webroot-path ' if certbot_create_method == 'webroot'  else '' }}
+  {{ cert_item.webroot if certbot_create_method == 'webroot'  else '' }}
   -d {{ cert_item.domains | join(',') }}
   {{ '--deploy-hook /etc/letsencrypt/renewal-hooks/deploy/ansible.sh' if certbot_deployhook is defined else '' }}
 
