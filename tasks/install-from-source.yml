@@ -7,11 +7,10 @@
     update: "{{ certbot_keep_updated }}"
     force: true
 
+- name: Install certbot-dns-digitalocean
+  shell: "cd {{certbot_dir}}/{{ item }} && python setup.py install"
+  with_items: "{{ certbot_dns_providers }}"
+
 - name: Set Certbot script variable.
   set_fact:
-    certbot_script: "{{ certbot_dir }}/certbot-auto"
-
-- name: Ensure certbot-auto is executable.
-  file:
-    path: "{{ certbot_script }}"
-    mode: 0755
+    certbot_script: "/usr/local/bin/certbot"
