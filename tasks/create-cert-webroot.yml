@@ -4,6 +4,12 @@
     path: /etc/letsencrypt/live/{{ cert_item.domains | first }}/cert.pem
   register: letsencrypt_cert
 
+- name: Ensure deploy hook directory exists
+  file:
+    path: /etc/letsencrypt/renewal-hooks/deploy
+    state: directory
+    mode: 0755
+
 - name: Create deploy hook
   copy:
     content: "{{ certbot_deployhook }}"
