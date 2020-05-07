@@ -13,6 +13,10 @@ certbot_hsts: false
 certbot_create_if_missing: false
 certbot_create_method: standalone
 certbot_admin_email: email@example.com
+
+# Default webroot, overwritten by individual per-cert webroot directories
+certbot_webroot: /var/www/letsencrypt
+
 certbot_certs: []
 #   - email: janedoe@example.com
 #     webroot: "/var/www/html/"
@@ -29,7 +33,7 @@ certbot_create_command: >-
   --noninteractive --agree-tos
   --email {{ cert_item.email | default(certbot_admin_email) }}
   {{ '--webroot-path ' if certbot_create_method == 'webroot'  else '' }}
-  {{ cert_item.webroot if certbot_create_method == 'webroot'  else '' }}
+  {{ cert_item.webroot | default(certbot_webroot) if certbot_create_method == 'webroot'  else '' }}
   -d {{ cert_item.domains | join(',') }}
   {{ '--deploy-hook /etc/letsencrypt/renewal-hooks/deploy/ansible.sh' if certbot_deployhook is defined else '' }}
 

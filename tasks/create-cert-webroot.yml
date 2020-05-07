@@ -14,7 +14,7 @@
 
 - name: Create webroot directory if it doesn't exist yet
   file:
-    path: "{{ cert_item.webroot }}"
+    path: "{{ cert_item.webroot | default(certbot_webroot) }}"
     state: directory
 
 - name: Generate new certificate if one doesn't exist.
