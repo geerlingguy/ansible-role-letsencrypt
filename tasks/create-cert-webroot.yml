@@ -4,20 +4,6 @@
     path: /etc/letsencrypt/live/{{ cert_item.domains | first }}/cert.pem
   register: letsencrypt_cert
 
-- name: Ensure deploy hook directory exists
-  file:
-    path: /etc/letsencrypt/renewal-hooks/deploy
-    state: directory
-    mode: 0755
-
-- name: Create deploy hook
-  copy:
-    content: "{{ certbot_deployhook }}"
-    dest: /etc/letsencrypt/renewal-hooks/deploy/ansible.sh
-    mode: u+rwx
-  run_once: true
-  when: certbot_deployhook is defined
-
 - name: Create webroot directory if it doesn't exist yet
   file:
     path: "{{ cert_item.webroot | default(certbot_webroot) }}"
