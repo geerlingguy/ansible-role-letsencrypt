@@ -2,6 +2,7 @@
 - name: Add cron job for certbot renewal (if configured).
   cron:
     name: Certbot automatic renewal.
+    cron_file: "{{ certbot_auto_renew_cron_file }}"
     job: "{{ certbot_script }} renew {{ certbot_auto_renew_options }}"
     minute: "{{ certbot_auto_renew_minute }}"
     hour: "{{ certbot_auto_renew_hour }}"
