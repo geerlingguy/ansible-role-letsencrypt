@@ -7,6 +7,7 @@ certbot_auto_renew_minute: "30"
 certbot_auto_renew_options: "--quiet --no-self-upgrade"
 
 # Parameters used when creating new Certbot certs.
+certbot_etc: /etc/letsencrypt
 certbot_create_if_missing: false
 certbot_create_method: standalone
 certbot_admin_email: email@example.com

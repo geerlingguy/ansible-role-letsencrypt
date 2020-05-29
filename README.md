@@ -51,6 +51,8 @@ A list of domains (and other data) for which certs should be generated. You can 
 
 The `certbot_create_command` defines the command used to generate the cert.
 
+The `certbot_etc` variable defaulting to `/etc/letsencrypt` allows using a non-standard location for Certbot configuration.
+
 #### Standalone Certificate Generation
 
     certbot_create_standalone_stop_services:

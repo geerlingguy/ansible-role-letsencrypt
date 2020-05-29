@@ -1,7 +1,7 @@
 ---
 - name: Check if certificate already exists.
   stat:
-    path: /etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/cert.pem
+    path: "{{ certbot_etc }}/live/{{ cert_item.domains | first | replace('*.', '') }}/cert.pem"
   register: letsencrypt_cert
 
 - name: Stop services to allow certbot to generate a cert.
