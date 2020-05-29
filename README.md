@@ -12,7 +12,7 @@ Generally, installing from source (see section `Source Installation from Git`) l
 
 ## Role Variables
 
-The variable `certbot_install_from_source` controls whether to install Certbot from Git or package management. The latter is the default, so the variable defaults to `no`.
+The variables `certbot_install_from_source` and `certbot_install_with_package` control whether to install Certbot from Git or package management. The latter is the default, and you can set both variables to `no` to use a Certbot installed outside of this role.
 
     certbot_auto_renew: true
     certbot_auto_renew_user: "{{ ansible_user | default(lookup('env', 'USER')) }}"

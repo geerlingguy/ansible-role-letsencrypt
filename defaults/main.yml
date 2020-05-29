@@ -27,6 +27,10 @@ certbot_create_standalone_stop_services:
   # - apache
   # - varnish
 
+# To install Certbot with the OS package, set this variable to `true`.
+# If you are installing from source (see below) or manually, set this to `false`.
+certbot_install_with_package: false
+
 # To install from source (on older OSes or if you need a specific or newer
 # version of Certbot), set this variable to `yes` and configure other options.
 certbot_install_from_source: false

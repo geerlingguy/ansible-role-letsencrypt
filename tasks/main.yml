@@ -5,7 +5,7 @@
   when: ansible_os_family == 'RedHat'
 
 - import_tasks: install-with-package.yml
-  when: not certbot_install_from_source
+  when: certbot_install_with_package
 
 - import_tasks: install-from-source.yml
   when: certbot_install_from_source
