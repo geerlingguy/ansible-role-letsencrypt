@@ -2,6 +2,11 @@
 # See: https://github.com/geerlingguy/ansible-role-certbot/issues/107
 - block:
 
+  - name: Enable EPEL repo on CentOS 8+
+    yum:
+      name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+      state: present
+
   - name: Ensure dnf-plugins are installed on CentOS 8+.
     yum:
       name: dnf-plugins-core
