@@ -8,7 +8,7 @@
     force: true
 
 - name: Install certbot-dns-digitalocean
-  shell: "cd {{certbot_dir}}/{{ item }} && python setup.py install"
+  shell: "cd {{certbot_dir}}/{{ item }} && {{ python_executable }} setup.py install"
   with_items: "{{ certbot_dns_providers }}"
 
 - name: Set Certbot script variable.

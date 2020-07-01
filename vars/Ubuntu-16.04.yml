@@ -1,2 +1,3 @@
 ---
 certbot_package: letsencrypt
+python_executable: python3
