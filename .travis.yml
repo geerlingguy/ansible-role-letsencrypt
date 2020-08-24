@@ -7,12 +7,26 @@ env:
     - ROLE_NAME: certbot
   matrix:
     - MOLECULE_DISTRO: centos8
+    - MOLECULE_DISTRO: centos8
+      MOLECULE_PLAYBOOK: playbook-plugin-install.yml
+    - MOLECULE_DISTRO: centos8
+      MOLECULE_PLAYBOOK: playbook-pip3-install.yml
     - MOLECULE_DISTRO: centos7
+    - MOLECULE_DISTRO: centos7
+      MOLECULE_PLAYBOOK: playbook-plugin-install.yml
+    - MOLECULE_DISTRO: centos7
+      MOLECULE_PLAYBOOK: playbook-pip-install.yml
     - MOLECULE_DISTRO: centos6
       MOLECULE_PLAYBOOK: playbook-source-install.yml
     - MOLECULE_DISTRO: ubuntu1804
+    - MOLECULE_DISTRO: ubuntu1804
+      MOLECULE_PLAYBOOK: playbook-ppa-install.yml
+    - MOLECULE_DISTRO: ubuntu1804
+      MOLECULE_PLAYBOOK: playbook-pip-install.yml
     - MOLECULE_DISTRO: ubuntu1604
     - MOLECULE_DISTRO: debian10
+    - MOLECULE_DISTRO: debian9
+
 
 before_install:
   # Upgrade Docker to work with docker-py.

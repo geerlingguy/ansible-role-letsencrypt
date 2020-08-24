@@ -36,3 +36,8 @@ certbot_keep_updated: true
 
 # Where to put Certbot when installing from source.
 certbot_dir: /opt/certbot
+
+certbot_pkg_mgr: "{{ ansible_pkg_mgr }}"
+certbot_pip_version: 1.3.0
+certbot_pip_executable: pip
+certbot_use_ppa: false

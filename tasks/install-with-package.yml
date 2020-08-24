@@ -1,6 +1,27 @@
 ---
-- name: Install Certbot.
-  package: "name={{ certbot_package }} state=present"
+- name: Starting the Certbot Install via {{ certbot_pkg_mgr }}
+  include_tasks: "{{ certbot_pkg_mgr|lower }}/install.yml"
+
+- block:
+    - name: Install certbot package
+      package: name={{ certbot_package }}
+      register: task_result
+      until: task_result is success
+      retries: 10
+      delay: 2
+      when:
+        - certbot_plugins is undefined
+
+    - name: Install certbot plugins
+      package:
+        name: "{{ certbot_python }}-certbot-{{ item }}"
+      register: task_result
+      until: task_result is success
+      retries: 10
+      delay: 2
+      loop: "{{ certbot_plugins }}"
+      when: certbot_plugins is defined
+  when: certbot_pkg_mgr != 'pip'
 
 - name: Set Certbot script variable.
   set_fact:

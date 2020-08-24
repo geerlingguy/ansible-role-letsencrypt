@@ -1,0 +1,21 @@
+---
+# See: https://github.com/geerlingguy/ansible-role-certbot/issues/107
+- block:
+    - name: Ensure dnf-plugins are installed on CentOS 8+.
+      yum:
+        name: dnf-plugins-core
+        state: present
+
+    - name: Enable DNF module for CentOS 8+.
+      shell: |
+        dnf config-manager --set-enabled PowerTools
+      args:
+        warn: false
+      register: dnf_module_enable
+      changed_when: false
+    - name: Set the certbot_python to python3 (Certbot in RHEL 8 uses Python3)
+      set_fact:
+        certbot_python: python3
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version | int >= 8

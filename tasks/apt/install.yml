@@ -1,0 +1,25 @@
+---
+- name: Requirement for Debian 9 support
+  block:
+    - name: certbot | Debian | Install the Debian Backports repository
+      apt_repository:
+        repo: deb http://ftp.debian.org/debian stretch-backports main
+  when:
+    - ansible_distribution == 'Debian'
+    - ansible_distribution_major_version == '9'
+
+- block:
+    - name: Install the Ubuntu certbot/certbot PPA Apt Key
+      apt_key:
+        keyserver: keyserver.ubuntu.com
+        id: 7BF576066ADA65728FC7E70A8C47BE8E75BCA694
+    - name: Install the Ubuntu certbot/certbot PPA
+      apt_repository:
+        repo: ppa:certbot/certbot
+        codename: "{{ ansible_distribution_release }}"
+    - name: Set the package certbot_python to python3 (ppa uses python3)
+      set_fact:
+        certbot_python: python3
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - certbot_use_ppa

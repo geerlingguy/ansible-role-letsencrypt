@@ -1,0 +1,7 @@
+---
+- name: Set the certbot_python to python3 (Certbot in RHEL 7 uses Python3)
+  set_fact:
+    certbot_python: python2
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version | int <= 7

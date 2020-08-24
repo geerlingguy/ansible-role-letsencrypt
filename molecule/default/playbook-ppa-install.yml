@@ -1,0 +1,33 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  vars:
+    certbot_auto_renew_user: root
+
+  pre_tasks:
+    - name: Update apt cache.
+      apt: update_cache=yes cache_valid_time=600
+      when: ansible_os_family == 'Debian'
+      changed_when: false
+
+    - name: Install dependencies (RedHat).
+      yum: name={{ item }} state=present
+      with_items:
+        - cronie
+        - epel-release
+      when: ansible_os_family == 'RedHat'
+
+    - name: Install cron (Debian).
+      apt: name={{ item }} state=present
+      when: ansible_os_family == 'Debian'
+      with_items:
+        - cron
+        - gnupg
+
+  roles:
+    - role: geerlingguy.certbot
+      certbot_use_ppa: true
+      certbot_plugins:
+        - nginx

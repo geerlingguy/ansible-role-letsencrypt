@@ -1,0 +1,21 @@
+---
+- name: certbot | PyPI | Upgrade pip, setuptools, and pyopenssl as required
+  pip:
+    name: "{{ item }}"
+    executable: "{{ certbot_pip_executable }}"
+  loop:
+    - pip
+    - setuptools
+    - pyopenssl
+
+- name: certbot | PyPI | Install certbot {{ certbot_pip_version }}
+  pip:
+    name: certbot=={{ certbot_pip_version }}
+    executable: "{{ certbot_pip_executable }}"
+
+- name: certbot | PyPI | Install certbot plugins
+  pip:
+    name: "certbot-{{ item }}=={{ certbot_pip_version }}"
+    executable: "{{ certbot_pip_executable }}"
+  loop: "{{ certbot_plugins }}"
+  when: certbot_plugins is defined

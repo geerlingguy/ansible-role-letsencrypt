@@ -115,10 +115,10 @@
 
     - name: Install dependencies (RedHat).
       yum: name={{ item }} state=present
-      when: ansible_os_family == 'RedHat'
       with_items:
         - cronie
         - epel-release
+      when: ansible_os_family == 'RedHat'
 
     - name: Install cron (Debian).
       apt: name=cron state=present
