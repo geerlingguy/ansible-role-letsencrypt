@@ -51,15 +51,6 @@ A list of domains (and other data) for which certs should be generated. You can 
 
 The `certbot_create_command` defines the command used to generate the cert.
 
-#### Standalone Certificate Generation
-
-    certbot_create_standalone_stop_services:
-      - nginx
-
-Services that should be stopped while `certbot` runs it's own standalone server on ports 80 and 443. If you're running Apache, set this to `apache2` (Ubuntu), or `httpd` (RHEL), or if you have Nginx on port 443 and something else on port 80 (e.g. Varnish, a Java app, or something else), add it to the list so it is stopped when the certificate is generated.
-
-These services will only be stopped the first time a new cert is generated.
-
 ### Source Installation from Git
 
 You can install Certbot from it's Git source repository if desired. This might be useful in several cases, but especially when older distributions don't have Certbot packages available (e.g. CentOS < 7, Ubuntu < 16.10 and Debian < 8).

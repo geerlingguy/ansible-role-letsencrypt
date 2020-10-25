@@ -2,14 +2,14 @@
 # Certbot auto-renew cron job configuration (for certificate renewals).
 certbot_test: false
 certbot_auto_renew: true
-certbot_auto_renew_user: "{{ ansible_user | default(lookup('env', 'USER')) }}"
+certbot_auto_renew_user: root
 certbot_auto_renew_hour: "3"
 certbot_auto_renew_minute: "30"
 certbot_auto_renew_options: >-
   --quiet --no-self-upgrade --dns-route53 {%if certbot_test%}--test{%endif%}
 
 # Parameters used when creating new Certbot certs.
-certbot_create_if_missing: false
+certbot_create_if_missing: true
 certbot_create_method: certonly
 certbot_admin_email: email@example.com
 certbot_certs: []
@@ -23,11 +23,6 @@ certbot_create_command: >-
   {{ certbot_script }} certonly --noninteractive --agree-tos
   --email {{ cert_item.email | default(certbot_admin_email) }} --dns-route53
   -d {{ cert_item.domains | join(",") }} {%if certbot_test%}--test{%endif%}
-
-certbot_create_standalone_stop_services:
-  - nginx
-  # - apache
-  # - varnish
 
 # To install from source (on older OSes or if you need a specific or newer
 # version of Certbot), set this variable to `yes` and configure other options.
