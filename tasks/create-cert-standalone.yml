@@ -22,7 +22,9 @@
     owner: root
     group: root
     mode: 0750
-  when: certbot_create_standalone_stop_services is defined and certbot_create_standalone_stop_services
+  when:
+    - certbot_create_standalone_stop_services is defined
+    - certbot_create_standalone_stop_services
 
 - name: create post hook to start services
   template:
@@ -31,7 +33,9 @@
     owner: root
     group: root
     mode: 0750
-  when: certbot_create_standalone_stop_services is defined and certbot_create_standalone_stop_services
+  when:
+    - certbot_create_standalone_stop_services is defined
+    - certbot_create_standalone_stop_services
 
 - name: Generate new certificate if one doesn't exist.
   command: "{{ certbot_create_command }}"
