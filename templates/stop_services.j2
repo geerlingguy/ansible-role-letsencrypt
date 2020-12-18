@@ -1,11 +1,12 @@
-#!/bin/bash
+#!/bin/sh
 # {{ ansible_managed }}
 
+{% if ansible_service_mgr == 'systemd' %}
+systemctl stop {{ certbot_create_standalone_stop_services | join(" ") }}
+{% else %}
 {% for item in certbot_create_standalone_stop_services %}
 echo "stopping service {{ item }}"
-{% if ansible_service_mgr == 'systemd' %}
-systemctl stop {{ item }}
-{% elif ansible_service_mgr == 'upstart' %}
+{% if ansible_service_mgr == 'upstart' %}
 initctl stop {{ item }}
 {% elif ansible_service_mgr == 'openrc' %}
 rc-service {{ item }} stop
@@ -13,3 +14,4 @@ rc-service {{ item }} stop
 service {{ item }} stop
 {% endif %}
 {% endfor %}
+{% endif %}
