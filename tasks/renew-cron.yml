@@ -6,3 +6,19 @@
     minute: "{{ certbot_auto_renew_minute }}"
     hour: "{{ certbot_auto_renew_hour }}"
     user: "{{ certbot_auto_renew_user }}"
+  when: certbot_install_from_source or ansible_service_mgr != "systemd"
+
+- block:
+    - name: Remove cron job for certbot renewal.
+      cron:
+        name: Certbot automatic renewal.
+        state: absent
+    - name: Adapt systemd unit for renewal
+      lineinfile:
+        path: /lib/systemd/system/certbot.service
+        regexp: ^ExecStart=.*
+        line: ExecStart={{ certbot_script }} renew {{ certbot_auto_renew_options }}
+  when:
+    # certbot packages come with a timer unit for this job
+    - not certbot_install_from_source
+    - ansible_service_mgr == "systemd"
