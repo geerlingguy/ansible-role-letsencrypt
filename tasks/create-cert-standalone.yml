@@ -9,7 +9,7 @@
     name: "{{ item }}"
     state: stopped
   when: not letsencrypt_cert.stat.exists
-  with_items: "{{ certbot_create_standalone_stop_services }}"
+  with_items: "{{ cert_item.stop_services | default(certbot_create_standalone_stop_services) }}"
 
 - name: Generate new certificate if one doesn't exist.
   command: "{{ certbot_create_command }}"
@@ -20,4 +20,4 @@
     name: "{{ item }}"
     state: started
   when: not letsencrypt_cert.stat.exists
-  with_items: "{{ certbot_create_standalone_stop_services }}"
+  with_items: "{{ cert_item.stop_services | default(certbot_create_standalone_stop_services) }}"
