@@ -12,7 +12,5 @@
   systemd:
     name: certbot-renew.timer
     state: started
-    enabled: yes
+    enabled: "yes"
   when: certbot_auto_renew_use_systemd
-
-

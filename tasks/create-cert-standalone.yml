@@ -28,6 +28,6 @@
     section: renewalparams
     option: "{{ item.key }}"
     value: "{{ item.value }}"
-    create: no
+    create: "no"
   loop: "{{ cert_item.renewal_config | dict2items }}"
   when: cert_item.renewal_config is defined
