@@ -52,7 +52,8 @@ Additional options to pass to `certbot` during the creation event. This is usefu
     #     - example2.com
     #   renewal_config:
     #     authenticator: webroot
-    #     webroot-path: /usr/share/nginx/html
+    #     webroot_path: /usr/share/nginx/html
+    #     renew_hook: systemctl reload nginx
     #   create_options: --server https://ca.internal/acme/acme/director
     # - domains:
     #     - example3.com
