@@ -13,7 +13,7 @@
 
 - name: Add renew options to cli.ini file
   copy:
-    path: /etc/letsencrypt/cli.ini
+    dest: /etc/letsencrypt/cli.ini
     content: "{{ certbot_cli_options }}"
   when: certbot_cli_options is defined
 

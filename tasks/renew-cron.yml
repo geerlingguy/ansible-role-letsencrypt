@@ -7,3 +7,10 @@
     hour: "{{ certbot_auto_renew_hour }}"
     user: "{{ certbot_auto_renew_user }}"
   when: certbot_install_method == 'package' or certbot_install_method == 'source'
+
+- name: Enable systemd timer when using snap
+  systemd:
+    name: snap.certbot.renew.timer
+    state: started
+    enabled: yes
+  when: certbot_install_method == 'snap'
