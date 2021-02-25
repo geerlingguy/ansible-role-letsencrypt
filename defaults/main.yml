@@ -45,4 +45,3 @@ certbot_dir: /opt/certbot
 #   no-self-upgrade
 #   pre-hook = systemctl stop httpd
 #   post-hook = systemctl stop httpd
-

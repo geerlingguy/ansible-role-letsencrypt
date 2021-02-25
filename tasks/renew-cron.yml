@@ -6,3 +6,4 @@
     minute: "{{ certbot_auto_renew_minute }}"
     hour: "{{ certbot_auto_renew_hour }}"
     user: "{{ certbot_auto_renew_user }}"
+  when: certbot_install_method == 'package' or certbot_install_method == 'source'
