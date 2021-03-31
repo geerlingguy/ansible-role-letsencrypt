@@ -1,3 +1,4 @@
+---
 - name: Ensure deploy hook directory exists
   file:
     path: /etc/letsencrypt/renewal-hooks/deploy
@@ -11,4 +12,3 @@
     dest: /etc/letsencrypt/renewal-hooks/deploy/ansible.sh
     mode: u+rwx
   when: certbot_deployhook is defined
-
