@@ -6,21 +6,36 @@ certbot_auto_renew_hour: "3"
 certbot_auto_renew_minute: "30"
 certbot_auto_renew_options: "--quiet --no-self-upgrade"
 
+certbot_testmode: false
+certbot_hsts: false
+
 # Parameters used when creating new Certbot certs.
 certbot_create_if_missing: false
 certbot_create_method: standalone
 certbot_admin_email: email@example.com
+
+# Default webroot, overwritten by individual per-cert webroot directories
+certbot_webroot: /var/www/letsencrypt
+
 certbot_certs: []
-# - email: janedoe@example.com
-#   domains:
-#     - example1.com
-#     - example2.com
-# - domains:
-#     - example3.com
+#   - email: janedoe@example.com
+#     webroot: "/var/www/html/"
+#     domains:
+#       - example1.com
+#       - example2.com
+#   - domains:
+#       - example3.com
+
 certbot_create_command: >-
-  {{ certbot_script }} certonly --standalone --noninteractive --agree-tos
+  {{ certbot_script }} certonly --{{ certbot_create_method  }}
+  {{ '--hsts' if certbot_hsts else '' }}
+  {{ '--test-cert' if certbot_testmode else '' }}
+  --noninteractive --agree-tos
   --email {{ cert_item.email | default(certbot_admin_email) }}
+  {{ '--webroot-path ' if certbot_create_method == 'webroot'  else '' }}
+  {{ cert_item.webroot | default(certbot_webroot) if certbot_create_method == 'webroot'  else '' }}
   -d {{ cert_item.domains | join(',') }}
+  {{ '--deploy-hook /etc/letsencrypt/renewal-hooks/deploy/ansible.sh' if certbot_deployhook is defined else '' }}
 
 certbot_create_standalone_stop_services:
   - nginx
@@ -37,3 +52,6 @@ certbot_keep_updated: true
 
 # Where to put Certbot when installing from source.
 certbot_dir: /opt/certbot
+
+# Restart this service after successfull certificate creation:
+certbot_deployhook: "service {{ certbot_create_standalone_stop_services | join(' restart && service ') }} restart"

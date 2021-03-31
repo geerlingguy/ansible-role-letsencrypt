@@ -21,5 +21,17 @@
   loop_control:
     loop_var: cert_item
 
+- include_tasks: install-deploy-hook.yml
+  when:
+    - certbot_create_method == 'webroot'
+
+- include_tasks: create-cert-webroot.yml
+  with_items: "{{ certbot_certs }}"
+  when:
+    - certbot_create_if_missing
+    - certbot_create_method == 'webroot'
+  loop_control:
+    loop_var: cert_item
+
 - import_tasks: renew-cron.yml
   when: certbot_auto_renew

@@ -1,0 +1,14 @@
+---
+- name: Ensure deploy hook directory exists
+  file:
+    path: /etc/letsencrypt/renewal-hooks/deploy
+    state: directory
+    mode: 0755
+  when: certbot_deployhook is defined
+
+- name: Create deploy hook
+  copy:
+    content: "{{ certbot_deployhook }}"
+    dest: /etc/letsencrypt/renewal-hooks/deploy/ansible.sh
+    mode: u+rwx
+  when: certbot_deployhook is defined
