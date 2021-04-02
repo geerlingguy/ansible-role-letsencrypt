@@ -1,0 +1,19 @@
+---
+- name: Check if certificate already exists.
+  stat:
+    path: /etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/cert.pem
+  register: letsencrypt_cert_exists
+
+- name: Check if certificate domain list has changed.
+  lineinfile:
+    path: /etc/letsencrypt/domains-{{ cert_item.domains | first | replace('*.', '') }}.json
+    line: " {{ cert_item.domains | to_json }}"
+    state: present
+    create: true
+  check_mode: true
+  register: letsencrypt_cert_contents
+  when: letsencrypt_cert_exists.stat.exists
+
+- set_fact:
+    letsencrypt_cert_updated: "{{ (letsencrypt_cert_contents is changed) or (letsencrypt_cert_contents is failed) }}"
+  when: letsencrypt_cert_exists.stat.exists
