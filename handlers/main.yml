@@ -1,0 +1,7 @@
+---
+- name: start services
+  service:
+    name: "{{ item }}"
+    state: started
+  when: not letsencrypt_cert.stat.exists
+  with_items: "{{ certbot_create_standalone_stop_services }}"

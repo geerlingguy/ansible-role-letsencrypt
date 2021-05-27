@@ -1,5 +1,5 @@
 ---
-- name: Check if certificate already exists.
+- name: Check if certificate already exists. ({{ cert_item.domains }})
   stat:
     path: /etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/cert.pem
   register: letsencrypt_cert
@@ -11,13 +11,7 @@
   when: not letsencrypt_cert.stat.exists
   with_items: "{{ certbot_create_standalone_stop_services }}"
 
-- name: Generate new certificate if one doesn't exist.
+- name: Generate new certificate if one doesn't exist. ({{ cert_item.domains }})
   command: "{{ certbot_create_command }}"
   when: not letsencrypt_cert.stat.exists
-
-- name: Start services after cert has been generated.
-  service:
-    name: "{{ item }}"
-    state: started
-  when: not letsencrypt_cert.stat.exists
-  with_items: "{{ certbot_create_standalone_stop_services }}"
+  notify: start services
