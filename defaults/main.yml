@@ -5,6 +5,11 @@ certbot_auto_renew_user: "{{ ansible_user | default(lookup('env', 'USER')) }}"
 certbot_auto_renew_hour: "3"
 certbot_auto_renew_minute: "30"
 certbot_auto_renew_options: "--quiet --no-self-upgrade"
+# Set required cron var to cronjob
+certbot_set_cron_var: false
+certbot_cron_vars: []
+# - name: "CRON_TZ"
+#   value: "Asia/Jakarta"
 
 # Parameters used when creating new Certbot certs.
 certbot_create_if_missing: false

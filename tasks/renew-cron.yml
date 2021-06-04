@@ -1,4 +1,17 @@
 ---
+- name: Add cron var (if certbot_set_cron_var is true)
+  cronvar:
+    insertafter: "{{ item.insertafter | default(omit) }}"
+    insertbefore: "{{ item.insertbefore | default(omit) }}"
+    state: "{{ item.state | default(omit) }}"
+    name: "{{ item.name | default(omit) }}"
+    value: "{{ item.value | default(omit) }}"
+    user: "{{ certbot_auto_renew_user }}"
+  loop: "{{ certbot_cron_vars }}"
+  when:
+    - certbot_set_cron_var
+    - certbot_cron_vars
+
 - name: Add cron job for certbot renewal (if configured).
   cron:
     name: Certbot automatic renewal.
