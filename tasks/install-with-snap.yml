@@ -8,6 +8,7 @@
 - name: Ensure snapd is enabled.
   systemd:
     name: snapd.socket
+    state: started
     enabled: true
 
 - name: Enable classic snap support.
