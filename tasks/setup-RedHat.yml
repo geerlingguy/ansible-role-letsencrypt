@@ -18,3 +18,24 @@
   when:
     - ansible_distribution == 'CentOS'
     - ansible_distribution_major_version | int >= 8
+
+# Avoid "Unable to find a match: snapd" when trying to install snapd on RHEL 7/8
+# According to https://snapcraft.io/docs/installing-snap-on-red-hat
+- name: Ensure snap EPEL repository is added
+  block:
+
+    - name: Add EPEL using yum
+      yum:
+        name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+        state: present
+      when: ansible_distribution_major_version | int == 7
+
+    - name: Add EPEL using DNF
+      dnf:
+        name: 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm'
+        disable_gpg_check: yes
+        state: present
+      when: ansible_distribution_major_version | int == 8
+
+  when:
+    - ansible_distribution == 'RedHat'
