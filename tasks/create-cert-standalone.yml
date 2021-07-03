@@ -40,3 +40,11 @@
 - name: Generate new certificate if one doesn't exist.
   command: "{{ certbot_create_command }}"
   when: not letsencrypt_cert.stat.exists
+
+- name: Restart services after cert has been generated.
+  debug:
+    msg: "notify: restart {{ item }}"
+  notify: "restart {{ item }}"
+  changed_when: true
+  with_items: "{{ certbot_create_standalone_stop_services }}"
+  when: not letsencrypt_cert.stat.exists
