@@ -45,6 +45,11 @@
     dest: /usr/bin/certbot
     state: link
 
+- name: Ensure config directory exists
+  file:
+    path: /etc/letsencrypt
+    state: directory
+
 - name: Set Certbot script variable.
   set_fact:
     certbot_script: /usr/bin/certbot
